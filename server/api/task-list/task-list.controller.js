@@ -5,9 +5,9 @@ var TaskList = require('./task-list.model');
 
 // Get list of task-lists
 exports.index = function(req, res) {
-  TaskList.find({ userIds: req.params.userId }, function (err, taskList) {
+  TaskList.find({}, function (err, taskLists) {
     if(err) { return handleError(res, err); }
-    return res.json(200, taskList);
+    return res.json(200, taskLists);
   });
 };
 
