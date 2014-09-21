@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Task = require('./task.model');
+var TaskList = require('./task-list.model');
 
 exports.register = function(socket) {
-  Task.schema.post('save', function (doc) {
+  TaskList.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Task.schema.post('remove', function (doc) {
+  TaskList.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('task:save', doc);
+  socket.emit('task-list:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('task:remove', doc);
+  socket.emit('task-list:remove', doc);
 }
