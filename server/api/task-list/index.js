@@ -6,12 +6,6 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-var ensureIsCurrentUser = function(req, res, next) {
-	console.log(req.user);
-	if (req.user && (req.params.userId === req.user.id)) return next();
-	res.send(401);
-};
-
 router.use(auth.isAuthenticated());
 
 router.get('/', auth.hasRole('admin'), controller.index);
