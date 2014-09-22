@@ -2,10 +2,7 @@
 
 angular.module 'tasksjsApp'
 .controller 'NavbarCtrl', ($scope, $location, Auth) ->
-  $scope.menu = [
-    title: 'Listy zadań'
-    link: '/'
-  ]
+
   $scope.isCollapsed = true
   $scope.isLoggedIn = Auth.isLoggedIn
   $scope.isAdmin = Auth.isAdmin

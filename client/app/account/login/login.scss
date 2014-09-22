@@ -28,3 +28,15 @@ $btnGithubBackgroundHighlight:      #ccc;
 .btn-github {
   @include button-variant($btnTextAlt, $btnGithubBackground, $btnGithubBackgroundHighlight);
 }
+
+.login-form {
+	margin-top: 15px;
+}
+
+.o-auth > a {
+	margin-bottom: 10px	
+}
+
+.container hr:last-child {
+	margin-top: 10px;
+}
