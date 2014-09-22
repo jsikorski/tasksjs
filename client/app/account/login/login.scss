@@ -29,14 +29,14 @@ $btnGithubBackgroundHighlight:      #ccc;
   @include button-variant($btnTextAlt, $btnGithubBackground, $btnGithubBackgroundHighlight);
 }
 
-.login-form {
+.login .login-form {
 	margin-top: 15px;
 }
 
-.o-auth > a {
+.login .o-auth > a {
 	margin-bottom: 10px	
 }
 
-.container hr:last-child {
+.login .container hr:last-child {
 	margin-top: 10px;
 }
