@@ -2,7 +2,9 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, User, TaskList) ->
+tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, User, TaskList, Modal) ->
+  $scope.taskLists = []
+
   getUserTaskLists = ->
     $http.get("/api/users/#{$scope.currentUser._id}/task-lists").then (response) ->
         $scope.taskLists = _.map(response.data, (taskList) -> new TaskList(taskList))
@@ -19,12 +21,20 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
     modal.result.then (taskList) ->
       $scope.taskLists.push(taskList)
 
+  $scope.deleteTaskList = (taskList) ->
+    confirm = Modal.confirm.delete -> 
+      taskList.$delete().then ->
+        index = $scope.taskLists.indexOf(taskList)
+        $scope.taskLists.splice(index, 1) unless index is -1
+    confirm("listę #{taskList.name}")
+
   $scope.$on '$destroy', ->
     socket.unsyncUpdates 'task-list'
 
 
-tasksjsApp.controller 'TaskListCtrl', ($scope) ->
 
+tasksjsApp.controller 'TaskListCtrl', ($scope, Modal) ->
+  
 
 tasksjsApp.controller 'AddTaskListCtrl', ($scope, TaskList) ->
   $scope.taskList = new TaskList()

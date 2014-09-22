@@ -45,19 +45,19 @@ angular.module 'tasksjsApp'
         deleteModal = openModal(
           modal:
             dismissable: true
-            title: 'Confirm Delete'
-            html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>'
+            title: 'Potwierdź usunięcie'
+            html: '<p>Czy na pewno chcesz usunąć <strong>' + name + '</strong> ?</p>'
             buttons: [
               {
                 classes: 'btn-danger'
-                text: 'Delete'
+                text: 'Usuń'
                 click: (e) ->
                   deleteModal.close e
                   return
               }
               {
                 classes: 'btn-default'
-                text: 'Cancel'
+                text: 'Anuluj'
                 click: (e) ->
                   deleteModal.dismiss e
                   return
