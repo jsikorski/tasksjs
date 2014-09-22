@@ -3,7 +3,7 @@
 angular.module 'tasksjsApp'
 .controller 'NavbarCtrl', ($scope, $location, Auth) ->
   $scope.menu = [
-    title: 'Home'
+    title: 'Listy zadań'
     link: '/'
   ]
   $scope.isCollapsed = true

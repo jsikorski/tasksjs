@@ -20,8 +20,8 @@ angular.module 'tasksjsApp'
       scope: modalScope
 
   
-  # Public API here
-  
+  # Public API here  
+
   # Confirmation modals 
   confirm:
     

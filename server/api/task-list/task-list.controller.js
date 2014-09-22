@@ -22,7 +22,8 @@ exports.show = function(req, res) {
 
 // Creates a new task-list in the DB.
 exports.create = function(req, res) {
-  var taskList = _.extend({}, req.body, { userIds: [ req.user.userId ] });
+  var taskList = _.extend({}, req.body, { userIds: [ req.user._id ] });
+  console.log(taskList);
   TaskList.create(taskList, function(err, taskList) {
     if(err) { return handleError(res, err); }
     return res.json(201, taskList);

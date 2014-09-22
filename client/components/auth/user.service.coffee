@@ -15,3 +15,8 @@ angular.module 'tasksjsApp'
       params:
         id: 'me'
 
+    getTaskLists:
+      method: 'GET'
+      isArray: true
+      params:
+        controller: 'task-lists'

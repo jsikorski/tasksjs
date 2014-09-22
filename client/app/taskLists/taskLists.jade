@@ -1,0 +1,35 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+header#banner.hero-unit
+  .container
+    h1 Witaj {{ currentUser.name }}!
+    p.lead Aby dodać nową listę zadań naciśnij przycisk z plusem
+    img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+
+.container
+  .row
+    .col-lg-12
+      h1.page-header Moje listy zadań:
+        button.btn.btn-primary.pull-right(ng-click='addTaskList()', tooltip='Dodaj listę zadań')
+          span.glyphicon.glyphicon-plus
+      .row
+        .col-sm-6.col-md-4(ng-repeat='taskList in taskLists', ng-controller='TaskListCtrl')
+          .thumbnail
+            .caption
+              h3 {{ taskList.name }}
+                button.close(type='button', ng-click='deleteThing(thing)') ×
+              div(style="height: 76px")
+                //- p Zadań: 12
+                p Zadania do wykonania: {{ taskList.getNumberOfFinishedTasks() }}
+                p Zadania zakończone: {{ taskList.getNumberOfUnfinishedTasks() }}
+              //- p Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+              p
+                button.btn.btn-primary(href="#" role="button") Pokaż zadania
+                button.btn.btn-default(href="#" role="button") Udostępnij
+
+footer.footer
+  .container
+    p
+      | TasksJS v1.0.0
+      = ' | '
+      a(href='https://github.com/jsikorski') Jakub Sikorski

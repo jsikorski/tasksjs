@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('./user.model');
+var TaskList = require('../task-list/task-list.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -95,8 +96,9 @@ exports.me = function(req, res, next) {
 
 
 exports.showTaskLists = function(req, res, next) {
+  console.log("AAA");
   var userId = req.params.id;
-  TaskList.find({ userIds: req.params.userId }, function (err, taskLists) {
+  TaskList.find({}, function (err, taskLists) {
     if(err) { return handleError(res, err); }
     return res.json(200, taskLists);
   });

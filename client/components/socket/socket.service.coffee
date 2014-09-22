@@ -25,7 +25,7 @@ angular.module 'tasksjsApp'
   @param {Array} array
   @param {Function} callback
   ###
-  syncUpdates: (modelName, array, callback) ->
+  syncUpdates: (modelName, array, Resource, callback) ->
 
     ###
     Syncs item creation/updates on 'model:save'
@@ -43,6 +43,7 @@ angular.module 'tasksjsApp'
         array.splice index, 1, item
         event = 'updated'
       else
+        item = new Resource(item) if Resource
         array.push item
 
       callback? event, item, array

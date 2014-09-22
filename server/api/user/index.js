@@ -18,6 +18,6 @@ var isCurrentUser = function(req, res, next) {
 	if (req.params.id === req.user._id) { return next(); }
 	res.send(401);
 };
-router.get('/:id/task-lists', auth.isAuthenticated(), isCurrentUser, controller.showTaskLists);
+router.get('/:id/task-lists', auth.isAuthenticated(), controller.showTaskLists);
 
 module.exports = router;
