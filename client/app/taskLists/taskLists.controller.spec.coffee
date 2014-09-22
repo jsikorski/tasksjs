@@ -1,6 +1,6 @@
 'use strict'
 
-describe 'Controller: TaskListsCtrl', (User) ->
+describe 'Controller: TaskListsCtrl', ->
 
   # load the controller's module
   beforeEach module 'tasksjsApp' 
