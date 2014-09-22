@@ -96,7 +96,6 @@ exports.me = function(req, res, next) {
 
 
 exports.showTaskLists = function(req, res, next) {
-  console.log("AAA");
   var userId = req.params.id;
   TaskList.find({}, function (err, taskLists) {
     if(err) { return handleError(res, err); }
