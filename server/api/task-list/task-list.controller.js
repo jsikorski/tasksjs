@@ -23,7 +23,6 @@ exports.show = function(req, res) {
 // Creates a new task-list in the DB.
 exports.create = function(req, res) {
   var taskList = _.extend({}, req.body, { userIds: [ req.user._id ] });
-  console.log(taskList);
   TaskList.create(taskList, function(err, taskList) {
     if(err) { return handleError(res, err); }
     return res.json(201, taskList);
@@ -33,11 +32,14 @@ exports.create = function(req, res) {
 // Updates an existing task-list in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  if (!_.contains(req.body.userIds, req.user._id)) { req.body.userIds.push(req.user._id); }
   TaskList.findById(req.params.id, function (err, taskList) {
     if (err) { return handleError(res, err); }
     if(!taskList) { return res.send(404); }
     var updated = _.merge(taskList, req.body);
+    if (!_.some(updated.userIds, function(id) { return id.equals(req.user._id); })) { 
+      updated.userIds.push(req.user._id);
+    }
+
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, taskList);

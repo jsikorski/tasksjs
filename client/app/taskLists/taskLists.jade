@@ -16,8 +16,14 @@ header#banner.hero-unit
         .task-list.col-sm-6.col-md-4(ng-repeat='taskList in taskLists', ng-controller='TaskListCtrl')
           .thumbnail
             .caption
+
+              .pull-right.actions
+                i.fa.fa-pencil(ng-click='edit()', tooltip='Edytuj')
+                i.fa.fa-close(ng-click='deleteTaskList(taskList)', tooltip='Usuń')
+                //- button.close(type='button', ng-click='deleteTaskList(taskList)', tooltip='Usuń') ×
+
               h3 {{ taskList.name }}
-                button.close(type='button', ng-click='deleteTaskList(taskList)', tooltip='Usuń') ×
+                  
               div(style="height: 76px")
                 p Zadania do wykonania: {{ taskList.getNumberOfFinishedTasks() }}
                 p Zadania zakończone: {{ taskList.getNumberOfUnfinishedTasks() }}

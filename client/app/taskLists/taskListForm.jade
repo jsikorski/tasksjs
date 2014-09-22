@@ -2,7 +2,7 @@ form(name='form', ng-submit='submit(form)', novalidate)
 
 	.modal-header
 		button.close(type='button', ng-click='$dismiss()') &times;
-		h4.modal-title Dodaj listę zadań
+		h4.modal-title {{ title }}
 
 	.modal-body
 		.form-group.has-error

@@ -7,8 +7,8 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
 
   getUserTaskLists = ->
     $http.get("/api/users/#{$scope.currentUser._id}/task-lists").then (response) ->
-        $scope.taskLists = _.map(response.data, (taskList) -> new TaskList(taskList))
-        socket.syncUpdates 'task-list', $scope.taskLists, TaskList
+      _.each response.data, (taskList) -> 
+        $scope.taskLists.push(new TaskList(taskList))
 
   $scope.currentUser = Auth.getCurrentUser()
   if $scope.currentUser._id? then getUserTaskLists() else $scope.currentUser.$promise.then(getUserTaskLists)
@@ -19,6 +19,8 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
       controller: 'AddTaskListCtrl'
 
     modal.result.then (taskList) ->
+      return if _.find($scope.taskLists, _id: taskList._id)?
+      taskList = new TaskList(taskList)
       $scope.taskLists.push(taskList)
 
   $scope.deleteTaskList = (taskList) ->
@@ -28,19 +30,44 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
         $scope.taskLists.splice(index, 1) unless index is -1
     confirm("listę #{taskList.name}")
 
+  socket.syncUpdates 'task-list', $scope.taskLists, TaskList
   $scope.$on '$destroy', ->
     socket.unsyncUpdates 'task-list'
 
 
 
-tasksjsApp.controller 'TaskListCtrl', ($scope, Modal) ->
-  
+tasksjsApp.controller 'TaskListCtrl', ($scope, $modal) ->
+  $scope.edit = ->
+    modal = $modal.open
+      title: 'Edytuj listę zadań'
+      templateUrl: 'app/taskLists/taskListForm.html'
+      controller: 'EditTaskListCtrl'
+      resolve: 
+        editedTaskList: -> $scope.taskList
+
+    modal.result.then (taskList) ->
+      editedTaskList = _.extend($scope.taskList, name: taskList.name)  
+
+
 
 tasksjsApp.controller 'AddTaskListCtrl', ($scope, TaskList) ->
+  $scope.title = 'Dodaj listę zadań'
   $scope.taskList = new TaskList()
 
   $scope.submit = (form) ->
     $scope.submitted = true
     return if form.$invalid
     $scope.taskList.$save()
+      .then(-> $scope.$close($scope.taskList))
+
+
+
+tasksjsApp.controller 'EditTaskListCtrl', ($scope, editedTaskList, TaskList) ->
+  $scope.title = 'Edytuj listę zadań'
+  $scope.taskList = new TaskList(_.pick(editedTaskList, '_id', 'name', 'tasks', 'userIds'))
+
+  $scope.submit = (form) ->
+    $scope.submitted = true
+    return if form.$invalid
+    $scope.taskList.$update()
       .then(-> $scope.$close($scope.taskList))

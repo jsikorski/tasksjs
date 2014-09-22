@@ -37,13 +37,14 @@ angular.module 'tasksjsApp'
       index = array.indexOf oldItem
       event = 'created'
 
+      item = new Resource(item) if Resource
+
       # replace oldItem if it exists
       # otherwise just add item to the collection
       if oldItem
         array.splice index, 1, item
         event = 'updated'
       else
-        item = new Resource(item) if Resource
         array.push item
 
       callback? event, item, array
