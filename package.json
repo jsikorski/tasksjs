@@ -1,6 +1,6 @@
 {
   "name": "tasksjs",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "server/app.js",
   "dependencies": {
     "express": "~4.0.0",
