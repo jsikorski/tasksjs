@@ -2,7 +2,7 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal) ->
+tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal, socket) ->
 	$scope.taskList = taskList
 
 	$scope.edit = ->
@@ -36,6 +36,9 @@ tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal) -
 		confirm("zadanie #{task.name}")
 
 	$scope.$watch('taskList.tasks', (-> $scope.taskList.$update()), true)
+
+	socket.socket.on 'task-list:save', (taskList) ->
+		_.extend($scope.taskList, taskList) if ($scope.taskList._id is taskList._id)
 
 
 tasksjsApp.controller 'TaskCtrl', ($scope, $modal) ->
@@ -76,7 +79,7 @@ tasksjsApp.controller 'EditTaskCtrl', ($scope, task, taskList) ->
 		task = _.find($scope.taskList.tasks, _id: task._id)
 		index = $scope.taskList.tasks.indexOf(task)
 		return if index is -1
-		
+
 		$scope.taskList.tasks[index].name = $scope.task.name
 		$scope.taskList.$update()
 			.then((taskList) -> $scope.$close(taskList))
