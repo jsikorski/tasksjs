@@ -2,7 +2,7 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList) ->
+tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal) ->
 	$scope.taskList = taskList
 
 	$scope.edit = ->
@@ -24,6 +24,16 @@ tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList) ->
 
 		modal.result.then (taskList) ->
 			_.extend($scope.taskList, taskList)
+
+	$scope.deleteTask = (task) ->
+		confirm = Modal.confirm.delete -> 
+			index = $scope.taskList.tasks.indexOf(task)
+			return if index is -1
+			taskList = angular.copy($scope.taskList)
+			taskList.tasks.splice(index, 1)
+			taskList.$update().then (taskList) ->
+				_.extend($scope.taskList, taskList)
+		confirm("zadanie #{task.name}")
 
 	$scope.$watch('taskList.tasks', (-> $scope.taskList.$update()), true)
 

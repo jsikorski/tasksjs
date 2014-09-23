@@ -12,9 +12,13 @@ div(ng-include='"components/navbar/navbar.html"')
 
       ul.list-group.tasks-list(ng-show='taskList.tasks.length')
         li.list-group-item(ng-repeat='task in taskList.tasks')
+          .pull-right.actions
+            i.fa.fa-close(ng-click='deleteTask(task)', tooltip='Usuń')
+
           .checkbox
             label
               input(type="checkbox", ng-model='task.isFinished')
               | {{ task.name }}
+
 
       h3.text-muted(ng-hide='taskList.tasks.length') Brak zadań
