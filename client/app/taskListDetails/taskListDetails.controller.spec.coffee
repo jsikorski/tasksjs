@@ -15,6 +15,7 @@ describe 'Controller: TaskListDetailsCtrl', ->
     TaskListDetailsCtrl = $controller 'TaskListDetailsCtrl',
       $scope: scope
       taskList: taskList
+      socket: { socket: { on: -> } }
 
   it 'should attach current user to the scope', ->
     expect(scope.taskList).toBeDefined()
