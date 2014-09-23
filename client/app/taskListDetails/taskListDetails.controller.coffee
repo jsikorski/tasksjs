@@ -25,6 +25,8 @@ tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList) ->
 		modal.result.then (taskList) ->
 			_.extend($scope.taskList, taskList)
 
+	$scope.$watch('taskList.tasks', (-> $scope.taskList.$update()), true)
+
 
 tasksjsApp.controller 'AddTaskCtrl', ($scope, taskList) ->
 	$scope.title = 'Dodaj zadanie'
