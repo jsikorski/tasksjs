@@ -6,12 +6,16 @@ describe 'Controller: TaskListDetailsCtrl', ->
   beforeEach module 'tasksjsApp'
   TaskListDetailsCtrl = undefined
   scope = undefined
+  taskList = undefined
 
   # Initialize the controller and a mock scope
-  beforeEach inject ($controller, $rootScope) ->
+  beforeEach inject ($controller, $rootScope, TaskList) ->
     scope = $rootScope.$new()
+    taskList = new TaskList()
     TaskListDetailsCtrl = $controller 'TaskListDetailsCtrl',
       $scope: scope
+      taskList: taskList
 
-  it 'should ...', ->
-    expect(1).toEqual 1
+  it 'should attach current user to the scope', ->
+    expect(scope.taskList).toBeDefined()
+    expect(scope.taskList).toEqual(taskList)
