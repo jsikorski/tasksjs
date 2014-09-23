@@ -97,7 +97,7 @@ exports.me = function(req, res, next) {
 
 exports.showTaskLists = function(req, res, next) {
   var userId = req.params.id;
-  TaskList.find({ userIds: userId }, function (err, taskLists) {
+  TaskList.find({ userIds: userId }).sort( [['_id', 1]] ).exec(function (err, taskLists) {
     if(err) { return res.send(500, err); }
     return res.json(200, taskLists);
   });

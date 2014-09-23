@@ -24,14 +24,18 @@
 button + button
     margin-left: 5px
 
-.task-list .actions
-    display: none
+.task-list 
+    & .actions
+        display: none
 
-    i:hover
-        cursor: pointer
+        i:hover
+            cursor: pointer
 
-    i
-        margin-right: 5px
-    
-.task-list:hover .actions
-    display: block
+        i
+            margin-right: 5px
+
+    &:hover .actions
+        display: block
+
+    .tasks-info
+        height: 76px    

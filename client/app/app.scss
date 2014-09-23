@@ -19,6 +19,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // injector
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
+@import 'taskListDetails/taskListDetails.sass';
 @import 'taskLists/taskLists.sass';
 @import 'modal/modal.scss';
 // endinjector
@@ -27,4 +28,8 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	.tooltip {
 		display: none !important;
 	}
+}
+
+label {
+	line-height: 20px;
 }

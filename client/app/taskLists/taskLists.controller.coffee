@@ -9,13 +9,14 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
     $http.get("/api/users/#{$scope.currentUser._id}/task-lists").then (response) ->
       _.each response.data, (taskList) -> 
         $scope.taskLists.push(new TaskList(taskList))
+      $scope.taskListsLoaded = true
 
   $scope.currentUser = Auth.getCurrentUser()
   if $scope.currentUser._id? then getUserTaskLists() else $scope.currentUser.$promise.then(getUserTaskLists)
 
   $scope.addTaskList = ->
     modal = $modal.open
-      templateUrl: 'app/taskLists/taskListForm.html'
+      templateUrl: 'app/taskList/taskListForm.html'
       controller: 'AddTaskListCtrl'
 
     modal.result.then (taskList) ->
@@ -36,17 +37,19 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
 
 
 
-tasksjsApp.controller 'TaskListCtrl', ($scope, $modal) ->
+tasksjsApp.controller 'TaskListCtrl', ($scope, $modal, $state) ->
   $scope.edit = ->
     modal = $modal.open
-      title: 'Edytuj listę zadań'
-      templateUrl: 'app/taskLists/taskListForm.html'
+      templateUrl: 'app/taskList/taskListForm.html'
       controller: 'EditTaskListCtrl'
       resolve: 
         editedTaskList: -> $scope.taskList
 
     modal.result.then (taskList) ->
-      editedTaskList = _.extend($scope.taskList, name: taskList.name)  
+      editedTaskList = _.extend($scope.taskList, name: taskList.name)
+
+  $scope.showTaskListDetails = ->
+    $state.go('taskListDetails', taskListId: $scope.taskList._id)
 
 
 

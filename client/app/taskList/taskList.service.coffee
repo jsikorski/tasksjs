@@ -8,6 +8,6 @@ angular.module 'tasksjsApp'
   	_.where(@tasks, isFinished: true).length
 
   TaskList::getNumberOfUnfinishedTasks = ->
-  	_.where(@tasks, isFinished: true).length
+  	_.where(@tasks, isFinished: false).length
 
   TaskList

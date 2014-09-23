@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 
 var TaskSchema = new Schema({
 	name: String,
-	isFinished: Boolean
+	isFinished: { type: Boolean, default: false }
 });
 
 TaskSchema

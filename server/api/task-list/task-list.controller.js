@@ -13,9 +13,12 @@ exports.index = function(req, res) {
 
 // Get a single task-list
 exports.show = function(req, res) {
-  TaskList.findById({}, function (err, taskList) {
+  TaskList.findById(req.params.id, function (err, taskList) {
     if(err) { return handleError(res, err); }
     if(!taskList) { return res.send(404); }
+    if (!_.some(taskList.userIds, function(id) { return id.equals(req.user._id); })) { 
+      return res.send(401);
+    }
     return res.json(taskList);
   });
 };
@@ -35,12 +38,14 @@ exports.update = function(req, res) {
   TaskList.findById(req.params.id, function (err, taskList) {
     if (err) { return handleError(res, err); }
     if(!taskList) { return res.send(404); }
-    var updated = _.merge(taskList, req.body);
-    if (!_.some(updated.userIds, function(id) { return id.equals(req.user._id); })) { 
-      updated.userIds.push(req.user._id);
+    taskList.name = req.body.name;
+    taskList.tasks = req.body.tasks;
+    taskList.userIds = req.body.userIds;
+    if (!_.some(taskList.userIds, function(id) { return id.equals(req.user._id); })) { 
+      taskList.userIds.push(req.user._id);
     }
 
-    updated.save(function (err) {
+    taskList.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, taskList);
     });

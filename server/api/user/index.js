@@ -15,9 +15,9 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 
 var isCurrentUser = function(req, res, next) {
-	if (req.params.id === req.user._id) { return next(); }
+	if (req.params.id === req.user._id.toString()) { return next(); }
 	res.send(401);
 };
-router.get('/:id/task-lists', auth.isAuthenticated(), controller.showTaskLists);
+router.get('/:id/task-lists', auth.isAuthenticated(), isCurrentUser, controller.showTaskLists);
 
 module.exports = router;

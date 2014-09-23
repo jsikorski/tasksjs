@@ -1,0 +1,20 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+.container
+  .row
+    .col-lg-12
+      h1.page-header {{ taskList.name }}
+       .pull-right
+          button.btn.btn-primary(ng-click='edit()', tooltip='Edytuj listę zadań', tooltip-append-to-body='true')
+            span.glyphicon.glyphicon-pencil
+          button.btn.btn-primary(ng-click='addTask()', tooltip='Dodaj zadanie')
+            span.glyphicon.glyphicon-plus
+
+      ul.list-group.tasks-list(ng-show='taskList.tasks.length')
+        li.list-group-item(ng-repeat='task in taskList.tasks')
+          .checkbox
+            label
+              input(type="checkbox", ng-model='task.isFinished')
+              | {{ task.name }}
+
+      h3.text-muted(ng-hide='taskList.tasks.length') Brak zadań

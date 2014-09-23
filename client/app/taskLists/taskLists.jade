@@ -1,9 +1,9 @@
 div(ng-include='"components/navbar/navbar.html"')
 
-header#banner.hero-unit
+header#banner.hero-unit(ng-hide='!taskListsLoaded || taskLists.length')
   .container
     h1 Witaj {{ currentUser.name }}!
-    p.lead Aby dodać nową listę zadań naciśnij przycisk z plusem
+    p.lead Aby dodać nową listę zadań naciśnij przycisk plus
     img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
 
 .container
@@ -23,11 +23,11 @@ header#banner.hero-unit
 
               h3 {{ taskList.name }}
                   
-              div(style="height: 76px")
-                p Zadania do wykonania: {{ taskList.getNumberOfFinishedTasks() }}
-                p Zadania zakończone: {{ taskList.getNumberOfUnfinishedTasks() }}
+              div.tasks-info
+                p Zadania do wykonania: {{ taskList.getNumberOfUnfinishedTasks() }}
+                p Zadania zakończone: {{ taskList.getNumberOfFinishedTasks() }}
               p
-                button.btn.btn-primary(href="#" role="button") Pokaż zadania
+                button.btn.btn-primary(href="#" role="button", ng-click='showTaskListDetails()') Pokaż zadania
                 button.btn.btn-default(href="#" role="button") Udostępnij
 
 footer.footer

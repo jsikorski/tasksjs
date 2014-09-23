@@ -1,0 +1,17 @@
+form(name='form', ng-submit='submit(form)', novalidate)
+
+	.modal-header
+		button.close(type='button', ng-click='$dismiss()') &times;
+		h4.modal-title {{ title }}
+
+	.modal-body
+		.form-group.has-error
+			p.help-block {{ error }}
+
+		.form-group(ng-class='{ "has-error": submitted && form.name.$invalid }')
+			input.form-control(type='text', placeholder='Nazwa', name='name', ng-model='task.name', required, focus-when='true')
+			p.help-block(ng-show='submitted && form.name.$error.required') Pole nazwa jest wymagane.
+
+	.modal-footer
+		button.btn.btn-primary(type='submit') Zapisz
+		button.btn.btn-default(type='button', ng-click='$dismiss()') Anuluj
