@@ -38,6 +38,19 @@ tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal) -
 	$scope.$watch('taskList.tasks', (-> $scope.taskList.$update()), true)
 
 
+tasksjsApp.controller 'TaskCtrl', ($scope, $modal) ->
+	$scope.edit = ->
+		modal = $modal.open
+			templateUrl: 'app/task/taskForm.html'
+			controller: 'EditTaskCtrl'
+			resolve:
+				task: -> $scope.task
+				taskList: -> $scope.taskList
+
+		modal.result.then (taskList) ->
+			_.extend($scope.taskList, taskList)
+
+
 tasksjsApp.controller 'AddTaskCtrl', ($scope, taskList) ->
 	$scope.title = 'Dodaj zadanie'
 	$scope.task = {}
@@ -47,5 +60,23 @@ tasksjsApp.controller 'AddTaskCtrl', ($scope, taskList) ->
 		$scope.submitted = true
 		return if form.$invalid
 		$scope.taskList.tasks.push($scope.task)
+		$scope.taskList.$update()
+			.then((taskList) -> $scope.$close(taskList))
+
+
+tasksjsApp.controller 'EditTaskCtrl', ($scope, task, taskList) ->
+	$scope.title = 'Edytuj zadanie'
+	$scope.task = angular.copy(task)
+	$scope.taskList = angular.copy(taskList)
+
+	$scope.submit = (form) ->
+		$scope.submitted = true
+		return if form.$invalid
+
+		task = _.find($scope.taskList.tasks, _id: task._id)
+		index = $scope.taskList.tasks.indexOf(task)
+		return if index is -1
+		
+		$scope.taskList.tasks[index].name = $scope.task.name
 		$scope.taskList.$update()
 			.then((taskList) -> $scope.$close(taskList))

@@ -11,8 +11,9 @@ div(ng-include='"components/navbar/navbar.html"')
             span.glyphicon.glyphicon-plus
 
       ul.list-group.tasks-list(ng-show='taskList.tasks.length')
-        li.list-group-item(ng-repeat='task in taskList.tasks')
+        li.list-group-item(ng-repeat='task in taskList.tasks', ng-controller='TaskCtrl')
           .pull-right.actions
+            i.fa.fa-pencil(ng-click='edit()', tooltip='Edytuj', tooltip-append-to-body='true')
             i.fa.fa-close(ng-click='deleteTask(task)', tooltip='Usuń')
 
           .checkbox
