@@ -35,6 +35,9 @@ tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, Use
   $scope.$on '$destroy', ->
     socket.unsyncUpdates 'task-list'
 
+  $http.get('/version').then (response) ->
+    $scope.version = response.data
+
 
 
 tasksjsApp.controller 'TaskListCtrl', ($scope, $modal, $state) ->
