@@ -5,4 +5,4 @@ angular.module 'tasksjsApp'
 	$scope.version = $rootScope.version
 	unless $scope.version?
 		$http.get('/version').then (response) ->
-  			$sope.version = response.data
+  			$scope.version = response.data
