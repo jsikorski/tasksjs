@@ -30,9 +30,4 @@ header#banner.hero-unit(ng-hide='!taskListsLoaded || taskLists.length')
                 button.btn.btn-primary(href="#" role="button", ng-click='showTaskListDetails()') Pokaż zadania
                 button.btn.btn-default(href="#" role="button") Udostępnij
 
-footer.footer
-  .container
-    p
-      | TasksJS v{{ version }}
-      = ' | '
-      a(href='https://github.com/jsikorski') Jakub Sikorski
+div(ng-include='"components/footer/footer.html"')

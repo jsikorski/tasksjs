@@ -28,15 +28,16 @@ div(ng-include='"components/navbar/navbar.html"')
         hr
 
         div.o-auth
-          a.btn.btn-facebook(href='', ng-click='loginOauth("facebook")')
+          a.btn.btn-facebook(href='', ng-click='loginOauth("facebook")' disabled)
             i.fa.fa-facebook
             |  Użyj Facebooka
           = ' '
-          a.btn.btn-google-plus(href='', ng-click='loginOauth("google")')
+          a.btn.btn-google-plus(href='', ng-click='loginOauth("google")' disabled)
             i.fa.fa-google-plus
             |  Użyj Google+
           = ' '
-          a.btn.btn-twitter(href='', ng-click='loginOauth("twitter")')
+          a.btn.btn-twitter(href='', ng-click='loginOauth("twitter")' disabled)
             i.fa.fa-twitter
             |  Użyj Twittera
-  hr
+  
+  div(ng-include='"components/footer/footer.html"')

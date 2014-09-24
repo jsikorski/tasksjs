@@ -31,8 +31,11 @@ angular.module 'tasksjsApp', [
 
     $q.reject response
 
-.run ($rootScope, $location, Auth) ->
+.run ($rootScope, $location, Auth, $http) ->
   # Redirect to login if route requires auth and you're not logged in
+  $http.get('/version').then (response) ->
+    $rootScope.version = response.data
+
   $rootScope.$on '$stateChangeStart', (event, next) ->
     Auth.isLoggedInAsync (loggedIn) ->
       $location.path "/login" if next.authenticate and not loggedIn
