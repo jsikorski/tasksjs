@@ -17,7 +17,8 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    nodewebkit: 'grunt-node-webkit-builder'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -31,7 +32,8 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
-      dist: 'dist'
+      dist: 'dist',
+      webkitbuilds: 'webkitbuilds'
     },
     express: {
       options: {
@@ -185,7 +187,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      nodewebkit: '<%= yeoman.webkitbuilds %>'
     },
 
     // Add vendor prefixed styles
@@ -395,6 +398,21 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.client %>',
         dest: '.tmp/',
         src: ['{app,components}/**/*.css']
+      },
+      nodewebkit: {
+        files: [{
+          expand: true,
+          dest: '.tmp/nodewebkit',
+          cwd: '<%= yeoman.dist %>/public',
+          src: '**/*'
+        }, {
+          dest: '.tmp/nodewebkit/package.json',
+          src: '<%= yeoman.dist %>/package.json'
+        }, {
+          expand: true,
+          dest: '.tmp/nodewebkit',
+          src: 'node_modules/lodash/**'
+        }]
       }
     },
 
@@ -607,6 +625,14 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    nodewebkit: {
+      options: {
+        platforms: ['win', 'linux32', 'linux64', 'osx'],
+        buildDir: './<%= yeoman.webkitbuilds %>'
+      },
+      src: [ '.tmp/nodewebkit/**/*' ]
+    }
   });
 
   // Used for delaying livereload until after server has restarted
@@ -721,7 +747,10 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'clean:nodewebkit',
+    'copy:nodewebkit',
+    'nodewebkit'
   ]);
 
   grunt.registerTask('default', [

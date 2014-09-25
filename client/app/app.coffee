@@ -8,6 +8,8 @@ angular.module 'tasksjsApp', [
   'ui.router',
   'ui.bootstrap'
 ]
+.constant('origin', if require? then 'http://jsikorski-tasksjs.herokuapp.com' else '')
+
 .config ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) ->
   $urlRouterProvider
   .otherwise '/'
@@ -31,9 +33,9 @@ angular.module 'tasksjsApp', [
 
     $q.reject response
 
-.run ($rootScope, $location, Auth, $http) ->
+.run ($rootScope, $location, Auth, $http, origin) ->
   # Redirect to login if route requires auth and you're not logged in
-  $http.get('/version').then (response) ->
+  $http.get(origin + '/version').then (response) ->
     $rootScope.version = response.data
 
   $rootScope.$on '$stateChangeStart', (event, next) ->

@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module 'tasksjsApp'
-.factory 'TaskList', ($resource) ->
-  TaskList = $resource '/api/task-lists/:id', { id: '@_id' }, {update: method: 'PATCH'}
+.factory 'TaskList', ($resource, origin) ->
+  TaskList = $resource origin + '/api/task-lists/:id', { id: '@_id' }, {update: method: 'PATCH'}
 
   TaskList::getNumberOfFinishedTasks = ->
   	_.where(@tasks, isFinished: true).length

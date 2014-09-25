@@ -2,11 +2,12 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, User, TaskList, Modal) ->
+tasksjsApp.controller 'TaskListsCtrl', ($scope, $http, socket, $modal, Auth, User, TaskList, Modal, origin) ->
   $scope.taskLists = []
+  $scope.origin = origin
 
   getUserTaskLists = ->
-    $http.get("/api/users/#{$scope.currentUser._id}/task-lists").then (response) ->
+    $http.get("#{origin}/api/users/#{$scope.currentUser._id}/task-lists").then (response) ->
       _.each response.data, (taskList) -> 
         $scope.taskLists.push(new TaskList(taskList))
       $scope.taskListsLoaded = true

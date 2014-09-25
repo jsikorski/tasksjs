@@ -4,7 +4,7 @@ header#banner.hero-unit(ng-hide='!taskListsLoaded || taskLists.length')
   .container
     h1 Witaj {{ currentUser.name }}!
     p.lead Aby dodać nową listę zadań naciśnij przycisk plus
-    img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+    img(src='{{ origin + "/assets/images/yeoman.png" }}', alt='I\'m Yeoman')
 
 .container
   .row

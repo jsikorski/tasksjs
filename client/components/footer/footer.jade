@@ -3,4 +3,5 @@ footer.footer(ng-controller='FooterCtrl')
     p
       | TasksJS v{{ version }}
       = ' | '
-      a(href='https://github.com/jsikorski') Jakub Sikorski
+      a(ng-hide='isNodeWebkitApp', href='https://github.com/jsikorski') Jakub Sikorski
+      spane(ng-show='isNodeWebkitApp') Jakub Sikorski

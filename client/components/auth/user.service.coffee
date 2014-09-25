@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module 'tasksjsApp'
-.factory 'User', ($resource) ->
-  $resource '/api/users/:id/:controller',
+.factory 'User', ($resource, origin) ->
+  $resource origin + '/api/users/:id/:controller',
     id: '@_id'
   ,
     changePassword:

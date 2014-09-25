@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module 'tasksjsApp'
-.factory 'Auth', ($location, $rootScope, $http, User, $cookieStore, $q) ->
+.factory 'Auth', ($location, $rootScope, $http, User, $cookieStore, $q, origin) ->
   currentUser = if $cookieStore.get 'token' then User.get() else {}
 
   ###
@@ -13,7 +13,7 @@ angular.module 'tasksjsApp'
   ###
   login: (user, callback) ->
     deferred = $q.defer()
-    $http.post '/auth/local',
+    $http.post origin + '/auth/local',
       email: user.email
       password: user.password
 
