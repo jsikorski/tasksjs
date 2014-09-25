@@ -1,6 +1,6 @@
 {
   "name": "tasksjs",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "main": "index.html",
   "dependencies": {
     "express": "~4.0.0",
@@ -95,7 +95,6 @@
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true,
-  "main": "index.html",
   "window": {
     "title": "TasksJS",
     "toolbar": false,
