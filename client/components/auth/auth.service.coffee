@@ -19,6 +19,7 @@ angular.module 'tasksjsApp'
 
     .success (data) ->
       $cookieStore.put 'token', data.token
+      window.localStorage.setItem 'token', data.token
       currentUser = User.get()
       deferred.resolve data
       callback?()

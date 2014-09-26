@@ -6,11 +6,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- injector:nodewebkit:js -->
+    <!-- endinjector -->
+
+    <!-- injector:phonegap:js -->
+    <!-- endinjector -->
+
     <script type="text/javascript">
-      if (!window.require) {
+      if (!window.isPhoneGap && !window.isNodeWebkit) {
         document.write('<base href="/"/>');
       }
     </script>
+
     <title>TasksJS</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -26,6 +34,9 @@
       <!-- injector:css -->
       <!-- endinjector -->
     <!-- endbuild -->
+
+    <!-- injector:phonegap:css -->
+    <!-- endinjector -->
   </head>
   <body ng-app="tasksjsApp">
     <!--[if lt IE 7]>
@@ -44,12 +55,6 @@
 
       ga('create', 'UA-XXXXX-X');
       ga('send', 'pageview');
-    </script>
-    
-    <script type="text/javascript">
-      if (window.require) {
-        window._ = require('lodash');
-      }
     </script>
 
     <!--[if lt IE 9]>

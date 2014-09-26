@@ -33,7 +33,8 @@ module.exports = function (grunt) {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
       dist: 'dist',
-      webkitbuilds: 'webkitbuilds'
+      release: 'release',
+      phonegap: 'phonegap'
     },
     express: {
       options: {
@@ -188,7 +189,7 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp',
-      nodewebkit: '<%= yeoman.webkitbuilds %>'
+      release: '<%= yeoman.release %>/*'
     },
 
     // Add vendor prefixed styles
@@ -257,7 +258,8 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/public/{,*/}*.js',
             '<%= yeoman.dist %>/public/{,*/}*.css',
             '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/public/assets/fonts/*'
+            '<%= yeoman.dist %>/public/assets/fonts/*',
+            '!<%= yeoman.dist %>/public/environment/*',
           ]
         }
       }
@@ -377,7 +379,8 @@ module.exports = function (grunt) {
             'bower_components/**/*',
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
-            'index.html'
+            'index.html',
+            'environment/**/*'
           ]
         }, {
           expand: true,
@@ -412,6 +415,17 @@ module.exports = function (grunt) {
           expand: true,
           dest: '.tmp/nodewebkit',
           src: 'node_modules/lodash/**'
+        }]
+      },
+      phonegap: {
+        files: [{
+          expand: true,
+          dest: '.tmp/phonegap',
+          cwd: '<%= yeoman.dist %>/public',
+          src: '**/*'
+        }, {
+          dest: '.tmp/phonegap/package.json',
+          src: '<%= yeoman.dist %>/package.json'
         }]
       }
     },
@@ -623,15 +637,91 @@ module.exports = function (grunt) {
             '<%= yeoman.client %>/{app,components}/**/*.css'
           ]
         }
-      }
+      },
+
+      nodewebkitjs: {
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            return '<script src="' + filePath + '"></script>';
+          },
+          starttag: '<!-- injector:nodewebkit:js -->',
+          endtag: '<!-- endinjector -->'
+        },
+        files: {
+          '.tmp/nodewebkit/index.html': [
+            '<%= yeoman.client %>/environment/nodewebkit.js'
+          ]
+        }
+      },
+
+      nodewebkitcss: {
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            return '<link rel="stylesheet" href="' + filePath + '">';
+          },
+          starttag: '<!-- injector:nodewebkit:css -->',
+          endtag: '<!-- endinjector -->'
+        },
+        files: {
+          '.tmp/nodewebkit/index.html': [
+            '<%= yeoman.client %>/environment/nodewebkit.css'
+          ]
+        }
+      },
+
+      phonegapjs: {
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            return '<script src="' + filePath + '"></script>';
+          },
+          starttag: '<!-- injector:phonegap:js -->',
+          endtag: '<!-- endinjector -->'
+        },
+        files: {
+          '.tmp/phonegap/index.html': [
+            '<%= yeoman.client %>/phonegap.js',
+            '<%= yeoman.client %>/environment/phonegap.js'
+          ]
+        }
+      },
+
+      phonegapcss: {
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            return '<link rel="stylesheet" href="' + filePath + '">';
+          },
+          starttag: '<!-- injector:phonegap:css -->',
+          endtag: '<!-- endinjector -->'
+        },
+        files: {
+          '.tmp/phonegap/index.html': [
+            '<%= yeoman.client %>/environment/phonegap.css'
+          ]
+        }
+      },
     },
 
     nodewebkit: {
       options: {
         platforms: ['win', 'linux32', 'linux64', 'osx'],
-        buildDir: './<%= yeoman.webkitbuilds %>'
+        buildDir: './<%= yeoman.release %>/webkitbuilds'
       },
       src: [ '.tmp/nodewebkit/**/*' ]
+    },
+
+    compress: {
+      phonegap: {
+        options: {
+          archive: '<%= yeoman.release %>/phonegapbuilds/tasksjs.zip'
+        },
+        files: [
+          { expand: true, cwd: '.tmp/phonegap/', src: [ '**/*', '!phonegap.js' ], dest: '/' }
+        ]
+      }
     }
   });
 
@@ -748,9 +838,15 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'clean:nodewebkit',
+    'clean:release',
     'copy:nodewebkit',
-    'nodewebkit'
+    'injector:nodewebkitjs',
+    'injector:nodewebkitcss',
+    'nodewebkit',
+    'copy:phonegap',
+    'injector:phonegapjs',
+    'injector:phonegapcss',
+    'compress:phonegap'
   ]);
 
   grunt.registerTask('default', [

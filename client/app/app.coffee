@@ -8,7 +8,7 @@ angular.module 'tasksjsApp', [
   'ui.router',
   'ui.bootstrap'
 ]
-.constant('origin', if require? then 'http://jsikorski-tasksjs.herokuapp.com' else '')
+.constant('origin', if window.isNodeWebkit or window.isPhoneGap then 'http://jsikorski-tasksjs.herokuapp.com' else '')
 
 .config ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) ->
   $urlRouterProvider
@@ -21,7 +21,13 @@ angular.module 'tasksjsApp', [
   # Add authorization token to headers
   request: (config) ->
     config.headers = config.headers or {}
-    config.headers.Authorization = 'Bearer ' + $cookieStore.get 'token' if $cookieStore.get 'token'
+
+    if $cookieStore.get 'token'
+      token = $cookieStore.get('token')
+    else
+      token = window.localStorage.getItem('token')
+
+    config.headers.Authorization = 'Bearer ' + token if token
     config
 
   # Intercept 401s and redirect you to login
