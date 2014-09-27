@@ -13,7 +13,7 @@ div(ng-include='"components/navbar/navbar.html"')
 
         .form-group(ng-class='{ "has-error": form.email.$invalid && submitted }')
           label Email
-          input.form-control(type='email', name='email', ng-model='user.email', required='', mongoose-error='')
+          input.form-control(type='email', name='email', ng-model='user.email', required='', mongoose-error='', email)
           p.help-block(ng-show='form.email.$error.email && submitted')
             | Podany adres email nie jest prawidłowy.
           p.help-block(ng-show='form.email.$error.required && submitted')

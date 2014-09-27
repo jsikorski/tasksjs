@@ -17,7 +17,7 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!taskList) { return res.send(404); }
     if (!_.some(taskList.userIds, function(id) { return id.equals(req.user._id); })) { 
-      return res.send(401);
+      return res.send(403);
     }
     return res.json(taskList);
   });

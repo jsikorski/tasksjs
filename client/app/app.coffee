@@ -14,6 +14,10 @@ angular.module 'tasksjsApp', [
   $urlRouterProvider
   .otherwise '/'
 
+  $stateProvider.state '500',
+    url: '/500'
+    templateUrl: 'app/errors/500.html'
+
   $locationProvider.html5Mode true
   $httpProvider.interceptors.push 'authInterceptor'
 
@@ -39,7 +43,7 @@ angular.module 'tasksjsApp', [
 
     $q.reject response
 
-.run ($rootScope, $location, Auth, $http, origin) ->
+.run ($rootScope, $location, Auth, $http, origin, $state) ->
   # Redirect to login if route requires auth and you're not logged in
   $http.get(origin + '/version').then (response) ->
     $rootScope.version = response.data
@@ -47,3 +51,7 @@ angular.module 'tasksjsApp', [
   $rootScope.$on '$stateChangeStart', (event, next) ->
     Auth.isLoggedInAsync (loggedIn) ->
       $location.path "/login" if next.authenticate and not loggedIn
+
+  $rootScope.$on '$stateChangeError', ->
+    console.log 'ERROR'
+    $state.go('500')
