@@ -5,6 +5,10 @@
 'use strict';
 
 var TaskList = require('./task-list.model');
+var _ = require('lodash');
+var hasPermissionToTaskList = function(userId, taskList) {
+	return _.some(taskList.userIds, function(id) { return id.equals(userId); });	
+};
 
 exports.register = function(socket) {
   TaskList.schema.post('save', function (doc) {
@@ -16,9 +20,13 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('task-list:save', doc);
+  if (hasPermissionToTaskList(socket.decoded_token._id, doc)) {
+    socket.emit('task-list:save', doc);
+  }
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('task-list:remove', doc);
+  if (hasPermissionToTaskList(socket.decoded_token._id, doc)) { 
+    socket.emit('task-list:remove', doc);
+  }
 }
