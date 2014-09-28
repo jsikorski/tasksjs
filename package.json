@@ -1,6 +1,6 @@
 {
   "name": "tasksjs",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "main": "index.html",
   "dependencies": {
     "async": "^0.9.0",
