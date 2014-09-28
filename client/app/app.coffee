@@ -14,6 +14,10 @@ angular.module 'tasksjsApp', [
   $urlRouterProvider
   .otherwise '/'
 
+  $stateProvider.state '404',
+    url: '/404'
+    templateUrl: 'app/errors/404.html'
+
   $stateProvider.state '500',
     url: '/500'
     templateUrl: 'app/errors/500.html'
@@ -41,6 +45,9 @@ angular.module 'tasksjsApp', [
       # remove any stale tokens
       $cookieStore.remove 'token'
 
+    if response.status is 404
+      $location.path '/404'
+
     $q.reject response
 
 .run ($rootScope, $location, Auth, $http, origin, $state) ->
@@ -53,4 +60,10 @@ angular.module 'tasksjsApp', [
       $location.path "/login" if next.authenticate and not loggedIn
 
   $rootScope.$on '$stateChangeError', ->
-    $state.go('500')
+    response = arguments[5]
+    if response.status and response.status is 404
+      state = '404'
+    else
+      state = '500'
+
+    $state.go(state, {}, location: 'replace')
