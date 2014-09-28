@@ -13,7 +13,7 @@ angular.module 'tasksjsApp'
 					taskListId = $stateParams.taskListId
 					getTaskList = TaskList.get(id: taskListId).$promise
 					getTaskList.catch (response) -> 
-						$state.go('taskListUnauthorized', $stateParams, location: 'replace') if response.status is 403
+						$state.go('taskListUnauthorized', $stateParams) if response.status is 403
 					getTaskList
 		
 		.state 'taskListUnauthorized',
