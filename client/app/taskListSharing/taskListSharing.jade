@@ -1,0 +1,20 @@
+div(ng-include='"components/navbar/navbar.html"')
+
+.container
+	.row
+		.col-lg-12
+			h1.page-header {{ taskList.name }}
+				.pull-right
+					button.btn.btn-primary(ng-click='share()', tooltip='Udostępnij')
+						span.glyphicon.glyphicon-share
+
+			ul.list-group.tasks-list(ng-show='taskList.permittedUsers.length')
+				li.list-group-item.sharing-user(ng-repeat='user in taskList.permittedUsers')
+					i.glyphicon.glyphicon-remove.pull-right(ng-click='stopSharing(user)')
+					strong {{user.name}}
+					br
+					span.text-muted {{user.email}}
+
+			h3.text-muted(ng-hide='taskList.permittedUsers.length') Lista nie jest udostępniana żadnym użytkownikom
+
+div(ng-include='"components/footer/footer.html"')

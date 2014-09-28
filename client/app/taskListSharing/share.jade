@@ -1,0 +1,17 @@
+form(name='form', ng-submit='submit(form)', novalidate)
+
+	.modal-header
+		button.close(type='button', ng-click='$dismiss()') &times;
+		h4.modal-title Udostępnij listę zadań
+
+	.modal-body
+		.form-group.has-error
+			p.help-block {{ error }}
+
+		.form-group(ng-class='{ "has-error": submitted && form.email.$invalid }')
+			input.form-control(type='text', placeholder='Email użytkownika', name='email', ng-model='user.email', required, focus-when='true', email)
+			p.help-block(ng-show='submitted && form.email.$error.required') Pole email użytkownika jest wymagane.
+
+	.modal-footer
+		button.btn.btn-primary(type='submit') Zapisz
+		button.btn.btn-default(type='button', ng-click='$dismiss()') Anuluj

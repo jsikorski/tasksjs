@@ -10,8 +10,9 @@ header#banner.hero-unit(ng-hide='!taskListsLoaded || taskLists.length')
   .row
     .col-lg-12
       h1.page-header Moje listy zadań:
-        button.btn.btn-primary.pull-right(ng-click='addTaskList()', tooltip='Dodaj listę zadań')
-          span.glyphicon.glyphicon-plus
+        .pull-right
+          button.btn.btn-primary(ng-click='addTaskList()', tooltip='Dodaj listę zadań')
+            span.glyphicon.glyphicon-plus
       .row
         .task-list.col-sm-6.col-md-4(ng-repeat='taskList in taskLists', ng-controller='TaskListCtrl')
           .thumbnail
@@ -28,6 +29,6 @@ header#banner.hero-unit(ng-hide='!taskListsLoaded || taskLists.length')
                 p Zadania zakończone: {{ taskList.getNumberOfFinishedTasks() }}
               p
                 button.btn.btn-primary(href="#" role="button", ng-click='showTaskListDetails()') Pokaż zadania
-                button.btn.btn-default(href="#" role="button") Udostępnij
+                button.btn.btn-default(href="#" role="button" ng-click='showTaskListSharing()') Udostępnij
 
 div(ng-include='"components/footer/footer.html"')

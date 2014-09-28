@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    _ = require('lodash');
 
 
 var TaskSchema = new Schema({
@@ -18,8 +19,9 @@ TaskSchema
 
 var TaskListSchema = new Schema({
   name: String,
-  userIds: [ Schema.Types.ObjectId ],
-  tasks: [ TaskSchema ]
+  tasks: [ TaskSchema ],
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  permittedUsers: [ { type: Schema.Types.ObjectId, ref: 'User' } ]
 });
 
 TaskListSchema
@@ -27,6 +29,10 @@ TaskListSchema
 	.validate(function(name) { 
 		return name.length; 
 	}, 'Name cannot be blank');
+
+TaskListSchema.methods.isPermittedFor = function(userId) {
+	return this.owner.equals(userId) || _.some(this.permittedUsers, function(user) { return user._id.equals(userId); });
+};
 
 
 module.exports = mongoose.model('TaskList', TaskListSchema);

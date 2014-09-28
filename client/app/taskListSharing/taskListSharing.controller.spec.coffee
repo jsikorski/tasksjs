@@ -1,10 +1,10 @@
 'use strict'
 
-describe 'Controller: TaskListDetailsCtrl', ->
+describe 'Controller: TaskListSharingCtrl', ->
 
   # load the controller's module
   beforeEach module 'tasksjsApp'
-  TaskListDetailsCtrl = undefined
+  TaskListSharingCtrl = undefined
   scope = undefined
   taskList = undefined
 
@@ -12,7 +12,7 @@ describe 'Controller: TaskListDetailsCtrl', ->
   beforeEach inject ($controller, $rootScope, TaskList) ->
     scope = $rootScope.$new()
     taskList = new TaskList()
-    TaskListDetailsCtrl = $controller 'TaskListDetailsCtrl',
+    TaskListSharingCtrl = $controller 'TaskListSharingCtrl',
       $scope: scope
       taskList: taskList
       socket: { socket: { on: -> } }

@@ -52,6 +52,9 @@ tasksjsApp.controller 'TaskListCtrl', ($scope, $modal, $state) ->
   $scope.showTaskListDetails = ->
     $state.go('taskListDetails', taskListId: $scope.taskList._id)
 
+  $scope.showTaskListSharing = ->
+    $state.go('taskListSharing', taskListId: $scope.taskList._id)
+
 
 
 tasksjsApp.controller 'AddTaskListCtrl', ($scope, TaskList) ->

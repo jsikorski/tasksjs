@@ -25,47 +25,43 @@ angular.module 'tasksjsApp'
   # Confirmation modals 
   confirm:
     
-    ###
-    Create a function to open a delete confirmation modal (ex. ng-click='myModalFn(name, arg1, arg2...)')
-    @param  {Function} del - callback, ran when delete is confirmed
-    @return {Function}     - the function to open the modal (ex. myModalFn)
-    ###
-    delete: (del) ->
-      del = del or angular.noop
+    warning: (action) ->
+      action = action or angular.noop
       
-      ###
-      Open a delete confirmation modal
-      @param  {String} name   - name or info to show on modal
-      @param  {All}           - any additional args are passed staight to del callback
-      ###
-      ->
-        args = Array::slice.call arguments
-        name = args.shift()
-        deleteModal = undefined
-        deleteModal = openModal(
+      (title, message) ->
+        warningModal = undefined
+        warningModal = openModal(
           modal:
             dismissable: true
-            title: 'Potwierdź usunięcie'
-            html: '<p>Czy na pewno chcesz usunąć <strong>' + name + '</strong> ?</p>'
+            title: title
+            html: message
             buttons: [
               {
                 classes: 'btn-danger'
                 text: 'Usuń'
                 click: (e) ->
-                  deleteModal.close e
+                  warningModal.close e
                   return
               }
               {
                 classes: 'btn-default'
                 text: 'Anuluj'
                 click: (e) ->
-                  deleteModal.dismiss e
+                  warningModal.dismiss e
                   return
               }
             ]
         , 'modal-danger')
-        deleteModal.result.then (event) ->
-          del.apply event, args
+        warningModal.result.then (event) ->
+          action.apply event
           return
 
         return
+
+
+    delete: (del) ->
+      that = @
+      ->
+        args = Array::slice.call arguments
+        name = args.shift()
+        that.warning(del)('Potwierdź usunięcie', '<p>Czy na pewno chcesz usunąć <strong>' + name + '</strong> ?</p>')

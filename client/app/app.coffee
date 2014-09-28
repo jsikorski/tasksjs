@@ -53,5 +53,4 @@ angular.module 'tasksjsApp', [
       $location.path "/login" if next.authenticate and not loggedIn
 
   $rootScope.$on '$stateChangeError', ->
-    console.log 'ERROR'
     $state.go('500')
