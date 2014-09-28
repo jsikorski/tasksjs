@@ -2,7 +2,7 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListSharingCtrl', ($scope, taskList, $modal, Modal, socket) ->
+tasksjsApp.controller 'TaskListSharingCtrl', ($scope, taskList, $modal, Modal, socket, taskListErrorResolver, notify) ->
 	$scope.taskList = taskList
 
 	$scope.share = ->
@@ -21,8 +21,10 @@ tasksjsApp.controller 'TaskListSharingCtrl', ($scope, taskList, $modal, Modal, s
 			return if index is -1
 			taskList = angular.copy($scope.taskList)
 			taskList.permittedUsers.splice(index, 1)
-			taskList.$update().then (taskList) ->
-				_.extend($scope.taskList, taskList)
+			taskList.$update()
+				.then (taskList) -> _.extend($scope.taskList, taskList)
+				.catch (error) -> notify.error(taskListErrorResolver.getErrorMessage(error))
+				
 		confirm('Potwierdź zatrzymanie udostępniania', 
 			'<p>Czy na pewno chcesz przestać udostępniać listę użytkownikowi <strong>' + user.name + '</strong> ?</p>')
 
@@ -30,7 +32,7 @@ tasksjsApp.controller 'TaskListSharingCtrl', ($scope, taskList, $modal, Modal, s
 		_.extend($scope.taskList, taskList) if ($scope.taskList._id is taskList._id)
 
 
-tasksjsApp.controller 'ShareCtrl', ($scope, taskList) ->
+tasksjsApp.controller 'ShareCtrl', ($scope, taskList, taskListErrorResolver) ->
 	$scope.user = {}
 	$scope.taskList = angular.copy(taskList)
 
@@ -43,9 +45,4 @@ tasksjsApp.controller 'ShareCtrl', ($scope, taskList) ->
 			.then((taskList) -> $scope.$close(taskList))
 			.catch (error) -> 
 				$scope.taskList = angular.copy(taskList)
-				if error.status is 403
-					$scope.error = 'Nie masz uprawnień do tej listy zadań.'
-				else if error.status is 404
-					$scope.error = 'Lista zadań nie została znaleziona.'
-				else
-					$scope.error = error.data.message ? 'Wystąpił nieznany błąd.'
+				$scope.error = taskListErrorResolver.getErrorMessage(error)

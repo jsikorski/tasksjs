@@ -57,24 +57,29 @@ tasksjsApp.controller 'TaskListCtrl', ($scope, $modal, $state) ->
 
 
 
-tasksjsApp.controller 'AddTaskListCtrl', ($scope, TaskList) ->
+tasksjsApp.controller 'AddTaskListCtrl', ($scope, TaskList, taskListErrorResolver) ->
   $scope.title = 'Dodaj listę zadań'
   $scope.taskList = new TaskList()
 
   $scope.submit = (form) ->
+    $scope.error = undefined
     $scope.submitted = true
     return if form.$invalid
     $scope.taskList.$save()
       .then(-> $scope.$close($scope.taskList))
+      .catch (error) -> 
+        $scope.error = taskListErrorResolver.getErrorMessage(error)
 
 
-
-tasksjsApp.controller 'EditTaskListCtrl', ($scope, editedTaskList, TaskList) ->
+tasksjsApp.controller 'EditTaskListCtrl', ($scope, editedTaskList, TaskList, taskListErrorResolver) ->
   $scope.title = 'Edytuj listę zadań'
   $scope.taskList = new TaskList(_.pick(editedTaskList, '_id', 'name', 'tasks', 'userIds'))
 
   $scope.submit = (form) ->
+    $scope.error = undefined
     $scope.submitted = true
     return if form.$invalid
     $scope.taskList.$update()
       .then(-> $scope.$close($scope.taskList))
+      .catch (error) -> 
+        $scope.error = taskListErrorResolver.getErrorMessage(error)

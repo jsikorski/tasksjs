@@ -2,7 +2,7 @@
 
 tasksjsApp = angular.module 'tasksjsApp'
 
-tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal, socket) ->
+tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal, socket, taskListErrorResolver, notify) ->
 	$scope.taskList = taskList
 
 	$scope.edit = ->
@@ -31,8 +31,10 @@ tasksjsApp.controller 'TaskListDetailsCtrl', ($scope, $modal, taskList, Modal, s
 			return if index is -1
 			taskList = angular.copy($scope.taskList)
 			taskList.tasks.splice(index, 1)
-			taskList.$update().then (taskList) ->
-				_.extend($scope.taskList, taskList)
+			taskList.$update()
+				.then (taskList) -> _.extend($scope.taskList, taskList)
+				.catch (error) -> notify.error(taskListErrorResolver.getErrorMessage(error))
+
 		confirm("zadanie #{task.name}")
 
 	$scope.$watch('taskList.tasks', (-> $scope.taskList.$update()), true)
@@ -54,25 +56,29 @@ tasksjsApp.controller 'TaskCtrl', ($scope, $modal) ->
 			_.extend($scope.taskList, taskList)
 
 
-tasksjsApp.controller 'AddTaskCtrl', ($scope, taskList) ->
+tasksjsApp.controller 'AddTaskCtrl', ($scope, taskList, taskListErrorResolver) ->
 	$scope.title = 'Dodaj zadanie'
 	$scope.task = {}
 	$scope.taskList = angular.copy(taskList)
 
 	$scope.submit = (form) ->
+		$scope.error = undefined
 		$scope.submitted = true
 		return if form.$invalid
 		$scope.taskList.tasks.push($scope.task)
 		$scope.taskList.$update()
 			.then((taskList) -> $scope.$close(taskList))
+			.catch (error) ->
+				$scope.error = taskListErrorResolver.getErrorMessage(error)
 
 
-tasksjsApp.controller 'EditTaskCtrl', ($scope, task, taskList) ->
+tasksjsApp.controller 'EditTaskCtrl', ($scope, task, taskList, taskListErrorResolver) ->
 	$scope.title = 'Edytuj zadanie'
 	$scope.task = angular.copy(task)
 	$scope.taskList = angular.copy(taskList)
 
 	$scope.submit = (form) ->
+		$scope.error = undefined
 		$scope.submitted = true
 		return if form.$invalid
 
@@ -83,3 +89,5 @@ tasksjsApp.controller 'EditTaskCtrl', ($scope, task, taskList) ->
 		$scope.taskList.tasks[index].name = $scope.task.name
 		$scope.taskList.$update()
 			.then((taskList) -> $scope.$close(taskList))
+			.catch (error) ->
+				$scope.error = taskListErrorResolver.getErrorMessage(error)
