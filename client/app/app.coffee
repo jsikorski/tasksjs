@@ -45,9 +45,6 @@ angular.module 'tasksjsApp', [
       # remove any stale tokens
       $cookieStore.remove 'token'
 
-    if response.status is 404
-      $location.path '/404'
-
     $q.reject response
 
 .run ($rootScope, $location, Auth, $http, origin, $state) ->
