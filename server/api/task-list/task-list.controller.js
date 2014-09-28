@@ -35,7 +35,7 @@ exports.create = function(req, res) {
 
 // Updates an existing task-list in the DB.
 exports.update = function(req, res) {
-  var taskList = undefined;
+  var taskList;
   if(req.body._id) { delete req.body._id; }
 
   async.series([

@@ -4,5 +4,5 @@ var HttpError = function (status, message) {
     this.stack = (new Error()).stack;
 }
 
-HttpError.prototype = new Error;
+HttpError.prototype = new Error();
 module.exports = HttpError;
