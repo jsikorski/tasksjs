@@ -18,7 +18,8 @@ module.exports = function (grunt) {
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
     buildcontrol: 'grunt-build-control',
-    nodewebkit: 'grunt-node-webkit-builder'
+    nodewebkit: 'grunt-node-webkit-builder',
+    lineremover: 'grunt-line-remover'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -34,7 +35,8 @@ module.exports = function (grunt) {
       client: require('./bower.json').appPath || 'client',
       dist: 'dist',
       release: 'release',
-      phonegap: 'phonegap'
+      phonegap: 'phonegap',
+      baseTag: '<base href="/"/>'
     },
     express: {
       options: {
@@ -722,6 +724,22 @@ module.exports = function (grunt) {
           { expand: true, cwd: '.tmp/phonegap/', src: [ '**/*', '!phonegap.js' ], dest: '/' }
         ]
       }
+    },
+
+    lineremover: {
+      baseNodewebkit: {
+        files: { '.tmp/nodewebkit/index.html': '.tmp/nodewebkit/index.html' },
+        options: {
+          exclusionPattern: '<%= yeoman.baseTag %>'
+        }
+      },
+
+      basePhonegap: {
+        files: { '.tmp/phonegap/index.html': '.tmp/phonegap/index.html' },
+        options: {
+          exclusionPattern: '<%= yeoman.baseTag %>'
+        }
+      }
     }
   });
 
@@ -840,10 +858,12 @@ module.exports = function (grunt) {
     'usemin',
     'clean:release',
     'copy:nodewebkit',
+    'lineremover:baseNodewebkit',
     'injector:nodewebkitjs',
     'injector:nodewebkitcss',
     'nodewebkit',
     'copy:phonegap',
+    'lineremover:basePhonegap',
     'injector:phonegapjs',
     'injector:phonegapcss',
     'compress:phonegap'
