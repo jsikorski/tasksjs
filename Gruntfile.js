@@ -80,8 +80,7 @@ module.exports = function (grunt) {
       },
       jsTest: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          '<%= yeoman.client %>/{app,components}/**/*.js'
         ],
         tasks: ['newer:jshint:all', 'karma']
       },
@@ -110,7 +109,7 @@ module.exports = function (grunt) {
       },
       coffeeTest: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}'
+          '<%= yeoman.client %>/{app,components}/**/*.{coffee,litcoffee,coffee.md}'
         ],
         tasks: ['karma']
       },
